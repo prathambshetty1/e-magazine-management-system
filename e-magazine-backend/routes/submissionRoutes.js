@@ -2,6 +2,7 @@ const express = require("express");
 
 const {
   createSubmission,
+  getMySubmissions,
 } = require("../controllers/submissionController");
 
 const { protect } = require("../middleware/auth");
@@ -16,4 +17,10 @@ router.post(
   createSubmission
 );
 
+router.get(
+  "/my",
+  protect,
+  authorize("student"),
+  getMySubmissions
+);
 module.exports = router;
