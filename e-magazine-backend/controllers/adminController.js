@@ -26,7 +26,11 @@ const approveSubmission = async (req, res) => {
         message: "Submission not found",
       });
     }
-
+    if (submission.category !== req.user.department) {
+        return res.status(403).json({
+            message: "Not authorized"
+        });
+    }
     submission.status = "Approved";
 
     await submission.save();
@@ -52,6 +56,11 @@ const rejectSubmission = async (req, res) => {
       return res.status(404).json({
         message: "Submission not found",
       });
+    }
+    if (submission.category !== req.user.department) {
+        return res.status(403).json({
+            message: "Not authorized"
+        });
     }
 
     submission.status = "Rejected";
