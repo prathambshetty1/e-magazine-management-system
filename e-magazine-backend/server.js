@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/authRoutes");
+const { protect } = require("./middleware/auth");
 
 const connectDB = require("./config/db");
 
@@ -17,6 +18,12 @@ app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("E-Magazine Backend Running");
+});
+app.get("/api/profile", protect, (req, res) => {
+  res.json({
+    message: "Protected Route Accessed",
+    user: req.user,
+  });
 });
 
 const PORT = process.env.PORT || 5000;
