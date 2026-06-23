@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const authRoutes = require("./routes/authRoutes");
 const { protect } = require("./middleware/auth");
 const { authorize } = require("./middleware/roleAuth");
+const submissionRoutes = require("./routes/submissionRoutes");
 
 const connectDB = require("./config/db");
 
@@ -16,6 +17,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoutes);
+app.use("/api/submissions", submissionRoutes);
 
 app.get("/", (req, res) => {
   res.send("E-Magazine Backend Running");
