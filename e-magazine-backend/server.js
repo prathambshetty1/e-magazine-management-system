@@ -3,6 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/authRoutes");
 const { protect } = require("./middleware/auth");
+const { authorize } = require("./middleware/roleAuth");
 
 const connectDB = require("./config/db");
 
@@ -25,6 +26,27 @@ app.get("/api/profile", protect, (req, res) => {
     user: req.user,
   });
 });
+app.get(
+  "/api/student",
+  protect,
+  authorize("student"),
+  (req, res) => {
+    res.json({
+      message: "Student Route Accessed",
+    });
+  }
+);
+
+app.get(
+  "/api/main-admin",
+  protect,
+  authorize("main_admin"),
+  (req, res) => {
+    res.json({
+      message: "Main Admin Route Accessed",
+    });
+  }
+);
 
 const PORT = process.env.PORT || 5000;
 
