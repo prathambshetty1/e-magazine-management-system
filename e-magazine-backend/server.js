@@ -6,6 +6,7 @@ const { protect } = require("./middleware/auth");
 const { authorize } = require("./middleware/roleAuth");
 const submissionRoutes = require("./routes/submissionRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const mainAdminRoutes = require("./routes/mainAdminRoutes");
 
 const connectDB = require("./config/db");
 
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/submissions", submissionRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/main-admin", mainAdminRoutes);
 
 app.get("/", (req, res) => {
   res.send("E-Magazine Backend Running");
