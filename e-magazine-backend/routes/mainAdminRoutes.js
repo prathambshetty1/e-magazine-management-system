@@ -6,18 +6,26 @@ const { protect } = require("../middleware/auth");
 const { authorize } = require("../middleware/roleAuth");
 
 const {
-  createCategoryAdmin,
+  assignDepartmentAdmin,
+  removeDepartmentAdmin,
   getAllUsers,
   getDashboardStats,
   getAllSubmissions,
   publishSubmission,
 } = require("../controllers/mainAdminController");
 
-router.post(
-  "/create-admin",
+
+router.put(
+    "/assign-admin",
+    protect,
+    authorize("main_admin"),
+    assignDepartmentAdmin
+);
+router.put(
+  "/remove-admin",
   protect,
   authorize("main_admin"),
-  createCategoryAdmin
+  removeDepartmentAdmin
 );
 router.get(
   "/users",

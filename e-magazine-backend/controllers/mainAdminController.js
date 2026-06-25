@@ -2,34 +2,75 @@ const User = require("../models/User");
 const Submission = require("../models/Submission");
 const bcrypt = require("bcryptjs");
 
-const createCategoryAdmin = async (req, res) => {
+
+// Promote Student to Department Admin
+
+const assignDepartmentAdmin = async (req, res) => {
   try {
-    const { name, usn, email, password, department } = req.body;
+    const { usn, department } = req.body;
 
-    
-    const existingUser = await User.findOne({ email });
+    const student = await User.findOne({ usn });
 
-    if (existingUser) {
-      return res.status(400).json({
-        message: "User already exists",
+    if (!student) {
+      return res.status(404).json({
+        message: "Student not found",
       });
     }
 
-    
-    const hashedPassword = await bcrypt.hash(password, 10);
+    if (student.role === "main_admin") {
+  return res.status(400).json({
+    message: "Main Admin cannot be assigned as Department Admin",
+  });
+}
 
-    
-    const admin = await User.create({
-      name,
-      usn,
-      email,
-      password: hashedPassword,
-      role: "dept_admin",
-      department,
+if (student.role === "dept_admin") {
+  return res.status(400).json({
+    message: `Student is already assigned to ${student.department}`,
+  });
+}
+
+    student.role = "dept_admin";
+    student.department = department;
+
+    await student.save();
+
+    res.status(200).json({
+      message: "Department Admin assigned successfully",
+      student,
     });
 
-    res.status(201).json({
-      message: "Category Admin created successfully",
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+// Remove Department Admin
+const removeDepartmentAdmin = async (req, res) => {
+  try {
+    const { usn } = req.body;
+
+    const admin = await User.findOne({ usn });
+
+    if (!admin) {
+      return res.status(404).json({
+        message: "Student not found",
+      });
+    }
+
+    if (admin.role !== "dept_admin") {
+      return res.status(400).json({
+        message: "Student is not a Department Admin",
+      });
+    }
+
+    admin.role = "student";
+    admin.department = null;
+
+    await admin.save();
+
+    res.status(200).json({
+      message: "Department Admin removed successfully",
       admin,
     });
 
@@ -142,7 +183,8 @@ const publishSubmission = async (req, res) => {
 };
 
 module.exports = {
-  createCategoryAdmin,
+  assignDepartmentAdmin,
+  removeDepartmentAdmin,
   getAllUsers,
   getDashboardStats,
   getAllSubmissions,
