@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const categories = require("../config/categories");
 const submissionSchema = new mongoose.Schema(
   {
     title: {
@@ -13,16 +13,10 @@ const submissionSchema = new mongoose.Schema(
     },
 
     category: {
-      type: String,
-      required: true,
-      enum: [
-        "Poems",
-        "Paintings",
-        "Photography",
-        "Articles",
-        "Short Stories",
-      ],
-    },
+    type: String,
+    required: true,
+    enum: categories,
+},
 
     student: {
       type: mongoose.Schema.Types.ObjectId,

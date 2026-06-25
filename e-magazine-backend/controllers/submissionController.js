@@ -1,9 +1,13 @@
 const Submission = require("../models/Submission");
-
+const categories = require("../config/categories");
 const createSubmission = async (req, res) => {
   try {
     const { title, description, category } = req.body;
-
+    if (!categories.includes(category)) {
+  return res.status(400).json({
+    message: "Invalid category",
+  });
+}
     const submission = await Submission.create({
       title,
       description,

@@ -1,13 +1,18 @@
 const User = require("../models/User");
 const Submission = require("../models/Submission");
 const bcrypt = require("bcryptjs");
-
+const categories = require("../config/categories");
 
 // Promote Student to Department Admin
 
 const assignDepartmentAdmin = async (req, res) => {
   try {
     const { usn, department } = req.body;
+    if (!categories.includes(department)) {
+  return res.status(400).json({
+    message: "Invalid department",
+  });
+}
 
     const student = await User.findOne({ usn });
 
