@@ -62,7 +62,11 @@ const rejectSubmission = async (req, res) => {
             message: "Not authorized"
         });
     }
-
+    if (!req.body.feedback) {
+  return res.status(400).json({
+    message: "Feedback is required when rejecting a submission",
+  });
+}
     submission.status = "Rejected";
     submission.feedback = req.body.feedback;
 
