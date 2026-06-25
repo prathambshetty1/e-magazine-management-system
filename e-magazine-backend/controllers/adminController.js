@@ -32,6 +32,8 @@ const approveSubmission = async (req, res) => {
         });
     }
     submission.status = "Approved";
+    submission.reviewedBy = req.user.id;
+    submission.reviewedAt = new Date();
 
     await submission.save();
 
@@ -69,6 +71,8 @@ const rejectSubmission = async (req, res) => {
 }
     submission.status = "Rejected";
     submission.feedback = req.body.feedback;
+    submission.reviewedBy = req.user.id;
+    submission.reviewedAt = new Date();
 
     await submission.save();
 

@@ -31,15 +31,31 @@ const submissionSchema = new mongoose.Schema(
     },
 
     status: {
-      type: String,
-      enum: ["Pending", "Approved", "Rejected"],
-      default: "Pending",
-    },
+    type: String,
+    enum: [
+        "Pending",
+        "Approved",
+        "Rejected",
+        "Published",
+    ],
+    default: "Pending",
+},
 
     feedback: {
-      type: String,
-      default: "",
-    },
+    type: String,
+    default: "",
+},
+
+reviewedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    default: null,
+},
+
+reviewedAt: {
+    type: Date,
+    default: null,
+},
   },
   {
     timestamps: true,
