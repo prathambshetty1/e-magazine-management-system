@@ -97,7 +97,7 @@ function Login() {
           <CardHeader className="text-center">
 
             <CardTitle className="text-4xl font-bold">
-              Welcome Back 👋
+              Welcome Back
             </CardTitle>
 
             <CardDescription className="text-base">
