@@ -1,23 +1,56 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "../pages/auth/Login";
+import { Routes, Route, Navigate } from "react-router-dom";
+
+import Login from "@/pages/auth/Login";
+
+import StudentDashboard from "@/pages/student/Dashboard";
+import DeptAdminDashboard from "@/pages/deptAdmin/Dashboard";
+import MainAdminDashboard from "@/pages/mainAdmin/Dashboard";
+
+import ProtectedRoute from "./ProtectedRoute";
+
+import { ROLES } from "@/config/roles";
 
 function AppRoutes() {
   return (
-    <BrowserRouter>
-      <Routes>
+    <Routes>
 
-        <Route
-          path="/"
-          element={<Login />}
-        />
+      {/* Public Route */}
+      <Route path="/" element={<Login />} />
 
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+      {/* Student Routes */}
+      <Route
+        path="/student/dashboard"
+        element={
+          <ProtectedRoute allowedRoles={[ROLES.STUDENT]}>
+            <StudentDashboard />
+          </ProtectedRoute>
+        }
+      />
 
-      </Routes>
-    </BrowserRouter>
+      {/* Department Admin Routes */}
+      <Route
+        path="/dept-admin/dashboard"
+        element={
+          <ProtectedRoute allowedRoles={[ROLES.DEPT_ADMIN]}>
+            <DeptAdminDashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Main Admin Routes */}
+      <Route
+        path="/main-admin/dashboard"
+        element={
+          <ProtectedRoute allowedRoles={[ROLES.MAIN_ADMIN]}>
+            <MainAdminDashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Invalid Route */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+
+    </Routes>
   );
 }
 
