@@ -1,8 +1,15 @@
+import DashboardLayout from "@/components/layout/DashboardLayout";
+import { ROLES } from "@/config/roles";
+
 function Dashboard() {
   return (
-    <div className="min-h-screen flex items-center justify-center text-4xl font-bold">
-      Main Admin Dashboard
-    </div>
+    <DashboardLayout role={ROLES.MAIN_ADMIN}>
+
+      <h1 className="text-3xl font-bold">
+        Main Admin Dashboard
+      </h1>
+
+    </DashboardLayout>
   );
 }
 
