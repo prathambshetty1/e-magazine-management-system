@@ -2,8 +2,9 @@ const express = require("express");
 
 const {
   createSubmission,
+  getStudentDashboard,
   getMySubmissions,
-  updateSubmission
+  updateSubmission,
 } = require("../controllers/submissionController");
 
 const { protect } = require("../middleware/auth");
@@ -29,5 +30,11 @@ router.put(
     protect,
     authorize("student"),
     updateSubmission
+);
+router.get(
+  "/dashboard",
+  protect,
+  authorize("student"),
+  getStudentDashboard
 );
 module.exports = router;

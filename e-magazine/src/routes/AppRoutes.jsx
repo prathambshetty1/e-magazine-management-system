@@ -1,17 +1,18 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-
+import MySubmissions from "@/pages/student/MySubmissions";
 import Login from "@/pages/auth/Login";
 
 import StudentDashboard from "@/pages/student/Dashboard";
 import DeptAdminDashboard from "@/pages/deptAdmin/Dashboard";
 import MainAdminDashboard from "@/pages/mainAdmin/Dashboard";
-
+import SubmitArticle from "@/pages/student/SubmitContent";
 import ProtectedRoute from "./ProtectedRoute";
 
 import { ROLES } from "@/config/roles";
 
 function AppRoutes() {
   return (
+    
     <Routes>
 
       {/* Public Route */}
@@ -46,6 +47,22 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      <Route
+  path="/student/submit"
+  element={
+    <ProtectedRoute allowedRoles={[ROLES.STUDENT]}>
+      <SubmitArticle />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/student/my-submissions"
+  element={
+    <ProtectedRoute allowedRoles={[ROLES.STUDENT]}>
+      <MySubmissions />
+    </ProtectedRoute>
+  }
+/>
 
       {/* Invalid Route */}
       <Route path="*" element={<Navigate to="/" replace />} />

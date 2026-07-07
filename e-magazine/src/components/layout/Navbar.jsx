@@ -1,58 +1,65 @@
-import { FaBell, FaUserCircle } from "react-icons/fa";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { FaSignOutAlt } from "react-icons/fa";
 
 function Navbar() {
   const user = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const pageTitles = {
+    "/student/dashboard": "Dashboard",
+    "/student/submit": "Submit Content",
+    "/student/my-submissions": "My Submissions",
+
+    "/dept-admin/dashboard": "Department Dashboard",
+    "/dept-admin/review": "Review Submissions",
+
+    "/main-admin/dashboard": "Main Admin Dashboard",
+    "/main-admin/publish": "Publish Magazine",
+  };
+
+  const pageTitle = pageTitles[location.pathname] || "Dashboard";
+
+  const today = new Date().toLocaleDateString("en-IN", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    navigate("/login", { replace: true });
+  };
 
   return (
-    <header className="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 shadow-sm">
+    <header className="sticky top-0 z-50 h-20 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
 
-      {/* Left Side */}
+      {/* Left */}
 
       <div>
-        <h1 className="text-2xl font-bold text-slate-800">
-          Dashboard
+        <h1 className="text-3xl font-bold text-slate-800">
+          {pageTitle}
         </h1>
 
-        
-        
+        <p className="text-sm text-slate-500 mt-1">
+          Welcome, {user?.name} • {today}
+        </p>
       </div>
 
-      {/* Right Side */}
+      {/* Right */}
 
-      <div className="flex items-center gap-6">
-
-        {/* Notification */}
-
-        <button className="relative text-slate-600 hover:text-emerald-600 transition">
-          <FaBell size={22} />
-
-          <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-red-500"></span>
-        </button>
-
-        {/* User */}
-
-        <div className="flex items-center gap-3">
-
-          <FaUserCircle
-            size={42}
-            className="text-emerald-600"
-          />
-
-          <div>
-
-            <p className="font-semibold">
-              {user?.name}
-            </p>
-
-            <p className="text-sm text-slate-500 capitalize">
-              {user?.role?.replace("_", " ")}
-            </p>
-
-          </div>
-
-        </div>
-
-      </div>
+      <Button
+        variant="destructive"
+        onClick={handleLogout}
+        className="flex items-center gap-2"
+      >
+        <FaSignOutAlt />
+        Logout
+      </Button>
 
     </header>
   );

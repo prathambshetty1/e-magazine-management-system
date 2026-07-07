@@ -1,6 +1,11 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import StatCard from "@/components/common/StatCard";
 import { ROLES } from "@/config/roles";
+
+import { getDashboardStats } from "@/services/submissionService";
 
 import {
   FaFileAlt,
@@ -19,6 +24,34 @@ import { Button } from "@/components/ui/button";
 function Dashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
 
+  const [dashboard, setDashboard] = useState({
+    stats: {
+      total: 0,
+      pending: 0,
+      approved: 0,
+      rejected: 0,
+      published: 0,
+    },
+    recent: [],
+  });
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadDashboard();
+  }, []);
+
+  const loadDashboard = async () => {
+    try {
+      const data = await getDashboardStats();
+      setDashboard(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <DashboardLayout role={ROLES.STUDENT}>
       <div className="space-y-8">
@@ -31,7 +64,7 @@ function Dashboard() {
           </h1>
 
           <p className="text-gray-500 mt-2 text-lg">
-            Here's what's happening with your articles today.
+            Here's what's happening with your submissions today.
           </p>
         </div>
 
@@ -40,36 +73,36 @@ function Dashboard() {
         <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6">
 
           <StatCard
-            title="My Articles"
-            value="12"
+            title="My Submissions"
+            value={dashboard.stats.total}
             icon={<FaFileAlt />}
             color="text-blue-500"
           />
 
           <StatCard
             title="Pending"
-            value="3"
+            value={dashboard.stats.pending}
             icon={<FaClock />}
             color="text-yellow-500"
           />
 
           <StatCard
             title="Approved"
-            value="8"
+            value={dashboard.stats.approved}
             icon={<FaCheckCircle />}
             color="text-green-500"
           />
 
           <StatCard
             title="Rejected"
-            value="1"
+            value={dashboard.stats.rejected}
             icon={<FaTimesCircle />}
             color="text-red-500"
           />
 
         </div>
 
-        {/* Bottom Section */}
+        {/* Bottom */}
 
         <div className="grid lg:grid-cols-2 gap-6">
 
@@ -78,83 +111,77 @@ function Dashboard() {
           <Card className="rounded-2xl shadow-sm">
 
             <CardHeader>
+
               <CardTitle className="flex items-center gap-2">
                 <FaHistory className="text-emerald-500" />
                 Recent Activity
               </CardTitle>
+
             </CardHeader>
 
             <CardContent>
 
-              <ul className="space-y-5">
+              {loading ? (
 
-                <li className="flex justify-between">
+                <p>Loading...</p>
 
-                  <div>
+              ) : dashboard.recent.length === 0 ? (
 
-                    <p className="font-medium">
-                      AI in Healthcare
-                    </p>
+                <p className="text-gray-500">
+                  No submissions yet.
+                </p>
 
-                    <p className="text-sm text-gray-500">
-                      Approved by Department Admin
-                    </p>
+              ) : (
 
-                  </div>
+                <ul className="space-y-5">
 
-                  <span className="text-green-500 font-semibold">
-                    Approved
-                  </span>
+                  {dashboard.recent.map((submission) => (
 
-                </li>
+                    <li
+                      key={submission._id}
+                      className="flex justify-between"
+                    >
 
-                <li className="flex justify-between">
+                      <div>
 
-                  <div>
+                        <p className="font-medium">
+                          {submission.title}
+                        </p>
 
-                    <p className="font-medium">
-                      Blockchain Security
-                    </p>
+                        <p className="text-sm text-gray-500">
+                          {submission.category}
+                        </p>
 
-                    <p className="text-sm text-gray-500">
-                      Awaiting Review
-                    </p>
+                      </div>
 
-                  </div>
+                      <span
+                        className={`font-semibold
+                        ${
+                          submission.status === "Approved"
+                            ? "text-green-500"
+                            : submission.status === "Pending"
+                            ? "text-yellow-500"
+                            : submission.status === "Rejected"
+                            ? "text-red-500"
+                            : "text-blue-500"
+                        }`}
+                      >
+                        {submission.status}
+                      </span>
 
-                  <span className="text-yellow-500 font-semibold">
-                    Pending
-                  </span>
+                    </li>
 
-                </li>
+                  ))}
 
-                <li className="flex justify-between">
+                </ul>
 
-                  <div>
-
-                    <p className="font-medium">
-                      Web Development Trends
-                    </p>
-
-                    <p className="text-sm text-gray-500">
-                      Changes Requested
-                    </p>
-
-                  </div>
-
-                  <span className="text-red-500 font-semibold">
-                    Revision
-                  </span>
-
-                </li>
-
-              </ul>
+              )}
 
             </CardContent>
 
           </Card>
 
-          {/* Right Side */}
+          {/* Right */}
 
           <div className="space-y-6">
 
@@ -163,39 +190,58 @@ function Dashboard() {
             <Card className="rounded-2xl shadow-sm">
 
               <CardHeader>
+
                 <CardTitle>
                   Quick Actions
                 </CardTitle>
+
               </CardHeader>
 
               <CardContent className="space-y-4">
 
-                <Button className="w-full flex items-center gap-2">
-                  <FaUpload />
-                  Submit New Article
-                </Button>
+                <Link to="/student/submit">
 
-                <Button
-                  variant="outline"
-                  className="w-full flex items-center gap-2"
-                >
-                  <FaEye />
-                  View My Articles
-                </Button>
+                  <Button className="w-full flex items-center gap-2">
+
+                    <FaUpload />
+
+                    Submit Content
+
+                  </Button>
+
+                </Link>
+
+                <Link to="/student/my-submissions">
+
+                  <Button
+                    variant="outline"
+                    className="w-full flex items-center gap-2"
+                  >
+
+                    <FaEye />
+
+                    View My Submissions
+
+                  </Button>
+
+                </Link>
 
               </CardContent>
 
             </Card>
 
-            {/* Upcoming Deadlines */}
+            {/* Deadlines */}
 
             <Card className="rounded-2xl shadow-sm">
 
               <CardHeader>
 
                 <CardTitle className="flex items-center gap-2">
+
                   <FaCalendarAlt className="text-red-500" />
+
                   Upcoming Deadlines
+
                 </CardTitle>
 
               </CardHeader>

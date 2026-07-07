@@ -1,165 +1,162 @@
-import { NavLink, useNavigate } from "react-router-dom";
-
 import {
   FaHome,
-  FaFileAlt,
   FaUpload,
-  FaUser,
-  FaUsers,
-  FaBuilding,
-  FaChartBar,
-  FaCheckCircle,
-  FaTimesCircle,
+  FaFolderOpen,
+  FaClipboardCheck,
+  FaBookOpen,
+  FaUsersCog,
   FaSignOutAlt,
 } from "react-icons/fa";
 
+import { NavLink, useNavigate } from "react-router-dom";
 import { ROLES } from "@/config/roles";
+
+import logo from "@/assets/logo/nittelogo1.png";
 
 function Sidebar({ role }) {
   const navigate = useNavigate();
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/");
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login", { replace: true });
   };
 
-  const menu = {
-    [ROLES.STUDENT]: [
-      {
-        name: "Dashboard",
-        icon: <FaHome />,
-        path: "/student/dashboard",
-      },
-      {
-        name: "My Articles",
-        icon: <FaFileAlt />,
-        path: "/student/articles",
-      },
-      {
-        name: "Submit Article",
-        icon: <FaUpload />,
-        path: "/student/submit",
-      },
-      {
-        name: "Profile",
-        icon: <FaUser />,
-        path: "/student/profile",
-      },
-    ],
+  const studentLinks = [
+    {
+      title: "Dashboard",
+      path: "/student/dashboard",
+      icon: <FaHome />,
+    },
+    {
+      title: "Submit Content",
+      path: "/student/submit",
+      icon: <FaUpload />,
+    },
+    {
+      title: "My Submissions",
+      path: "/student/my-submissions",
+      icon: <FaFolderOpen />,
+    },
+  ];
 
-    [ROLES.DEPT_ADMIN]: [
-      {
-        name: "Dashboard",
-        icon: <FaHome />,
-        path: "/dept-admin/dashboard",
-      },
-      {
-        name: "Pending Articles",
-        icon: <FaFileAlt />,
-        path: "/dept-admin/pending",
-      },
-      {
-        name: "Approved",
-        icon: <FaCheckCircle />,
-        path: "/dept-admin/approved",
-      },
-      {
-        name: "Rejected",
-        icon: <FaTimesCircle />,
-        path: "/dept-admin/rejected",
-      },
-      {
-        name: "Students",
-        icon: <FaUsers />,
-        path: "/dept-admin/students",
-      },
-    ],
+  const deptAdminLinks = [
+    {
+      title: "Dashboard",
+      path: "/dept-admin/dashboard",
+      icon: <FaHome />,
+    },
+    {
+      title: "Review Submissions",
+      path: "/dept-admin/review",
+      icon: <FaClipboardCheck />,
+    },
+  ];
 
-    [ROLES.MAIN_ADMIN]: [
-      {
-        name: "Dashboard",
-        icon: <FaHome />,
-        path: "/main-admin/dashboard",
-      },
-      {
-        name: "Departments",
-        icon: <FaBuilding />,
-        path: "/main-admin/departments",
-      },
-      {
-        name: "Users",
-        icon: <FaUsers />,
-        path: "/main-admin/users",
-      },
-      {
-        name: "Analytics",
-        icon: <FaChartBar />,
-        path: "/main-admin/analytics",
-      },
-      {
-        name: "Magazines",
-        icon: <FaFileAlt />,
-        path: "/main-admin/magazines",
-      },
-    ],
-  };
+  const mainAdminLinks = [
+    {
+      title: "Dashboard",
+      path: "/main-admin/dashboard",
+      icon: <FaHome />,
+    },
+    {
+      title: "Manage Departments",
+      path: "/main-admin/departments",
+      icon: <FaUsersCog />,
+    },
+    {
+      title: "Publish Magazine",
+      path: "/main-admin/publish",
+      icon: <FaBookOpen />,
+    },
+  ];
+
+  let links = [];
+
+  switch (role) {
+    case ROLES.STUDENT:
+      links = studentLinks;
+      break;
+
+    case ROLES.DEPT_ADMIN:
+      links = deptAdminLinks;
+      break;
+
+    case ROLES.MAIN_ADMIN:
+      links = mainAdminLinks;
+      break;
+
+    default:
+      links = [];
+  }
 
   return (
-    <aside className="w-72 bg-slate-900 text-white flex flex-col">
+    <aside className="w-72 min-h-screen bg-slate-900 text-white flex flex-col shadow-2xl">
 
-      {/* Logo */}
+      {/* Logo Section */}
 
-      <div className="p-6 border-b border-slate-800">
+      <div className="border-b border-slate-700 py-8 px-6">
 
-        <h1 className="text-2xl font-bold text-emerald-400">
-          E-Magazine
-        </h1>
+        <div className="flex flex-col items-center">
 
-        <p className="text-sm text-slate-400">
-          NMAM Institute of Technology
-        </p>
+          <img
+            src={logo}
+            alt="NMAMIT Logo"
+            className="w-44 h-44 object-contain"
+          />
+
+          <h1 className="mt-4 text-2xl font-bold tracking-wide">
+            NMAMIT
+          </h1>
+
+          <p className="text-slate-400 text-sm text-center mt-1">
+            E-Magazine Portal
+          </p>
+
+        </div>
 
       </div>
 
       {/* Navigation */}
 
-      <nav className="flex-1 p-4 space-y-2">
+      <nav className="flex-1 px-5 py-6 space-y-2">
 
-        {menu[role]?.map((item) => (
-
+        {links.map((link) => (
           <NavLink
-            key={item.path}
-            to={item.path}
+            key={link.path}
+            to={link.path}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+              `flex items-center gap-4 rounded-xl px-4 py-3 transition-all duration-200 ${
                 isActive
-                  ? "bg-emerald-500 text-white"
-                  : "hover:bg-slate-800 text-slate-300"
+                  ? "bg-emerald-600 text-white shadow-lg"
+                  : "text-slate-300 hover:bg-slate-800 hover:text-white"
               }`
             }
           >
-            <span className="text-lg">{item.icon}</span>
+            <span className="text-lg">
+              {link.icon}
+            </span>
 
-            <span>{item.name}</span>
-
+            <span className="font-medium">
+              {link.title}
+            </span>
           </NavLink>
-
         ))}
 
       </nav>
 
-      {/* Logout */}
+      {/* Footer */}
 
-      <div className="p-4 border-t border-slate-800">
+      <div className="border-t border-slate-700 p-5">
 
         <button
-          onClick={logout}
-          className="w-full flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 rounded-xl py-3 transition"
+          onClick={handleLogout}
+          className="w-full flex items-center gap-4 rounded-xl px-4 py-3 text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-200"
         >
-          <FaSignOutAlt />
+          <FaSignOutAlt className="text-lg" />
 
-          Logout
+          <span className="font-medium">
+            Logout
+          </span>
         </button>
 
       </div>
