@@ -7,7 +7,7 @@ import DeptAdminDashboard from "@/pages/deptAdmin/Dashboard";
 import MainAdminDashboard from "@/pages/mainAdmin/Dashboard";
 import SubmitArticle from "@/pages/student/SubmitContent";
 import ProtectedRoute from "./ProtectedRoute";
-
+import ReviewSubmissions from "@/pages/deptAdmin/ReviewSubmissions";
 import { ROLES } from "@/config/roles";
 
 function AppRoutes() {
@@ -37,7 +37,14 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
+      <Route
+  path="/dept-admin/review-submissions"
+  element={
+    <ProtectedRoute allowedRoles={[ROLES.DEPT_ADMIN]}>
+      <ReviewSubmissions />
+    </ProtectedRoute>
+  }
+/>
       {/* Main Admin Routes */}
       <Route
         path="/main-admin/dashboard"

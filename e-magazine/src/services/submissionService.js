@@ -1,25 +1,43 @@
 import api from "./api";
 
+// ===============================
 // Create Submission
-export const createSubmission = async (data) => {
-  const response = await api.post("/submissions", data);
+// ===============================
+export const createSubmission = async (formData) => {
+  const response = await api.post("/submissions", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
   return response.data;
 };
 
-// Dashboard Stats
+// ===============================
+// Dashboard Statistics
+// ===============================
 export const getDashboardStats = async () => {
   const response = await api.get("/submissions/dashboard");
   return response.data;
 };
 
-// Get My Submissions
+// ===============================
+// My Submissions
+// ===============================
 export const getMySubmissions = async () => {
   const response = await api.get("/submissions/my");
   return response.data;
 };
 
+// ===============================
 // Update Submission
-export const updateSubmission = async (id, data) => {
-  const response = await api.put(`/submissions/${id}`, data);
+// ===============================
+export const updateSubmission = async (id, formData) => {
+  const response = await api.put(`/submissions/${id}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
   return response.data;
 };

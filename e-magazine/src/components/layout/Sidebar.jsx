@@ -46,10 +46,10 @@ function Sidebar({ role }) {
       icon: <FaHome />,
     },
     {
-      title: "Review Submissions",
-      path: "/dept-admin/review",
-      icon: <FaClipboardCheck />,
-    },
+  title: "Review Submissions",
+  path: "/dept-admin/review-submissions",
+  icon: <FaClipboardCheck />,
+},
   ];
 
   const mainAdminLinks = [

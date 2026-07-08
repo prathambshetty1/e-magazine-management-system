@@ -1,6 +1,7 @@
 const express = require("express");
 
 const {
+  getDashboard,
   getPendingSubmissions,
   approveSubmission,
   rejectSubmission,
@@ -10,7 +11,12 @@ const { protect } = require("../middleware/auth");
 const { authorize } = require("../middleware/roleAuth");
 
 const router = express.Router();
-
+router.get(
+  "/dashboard",
+  protect,
+  authorize("dept_admin"),
+  getDashboard
+);
 router.get(
   "/submissions",
   protect,

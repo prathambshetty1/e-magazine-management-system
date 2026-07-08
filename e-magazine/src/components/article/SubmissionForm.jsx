@@ -37,27 +37,35 @@ function SubmissionForm({ category, onBack }) {
       return;
     }
 
-    if (isImageSubmission) {
-      alert(
-        "Image upload will be enabled after Cloudinary integration."
-      );
+    if (isImageSubmission && !image) {
+      alert("Please select an image.");
       return;
     }
 
-    if (!content.trim()) {
+    if (!isImageSubmission && !content.trim()) {
       alert("Please enter content.");
       return;
     }
 
     setLoading(true);
 
-    await createSubmission({
-      title,
-      description: content,
-      category,
-      tags,
-      isDraft: false,
-    });
+    const formData = new FormData();
+
+    formData.append("title", title);
+    formData.append("category", category);
+    formData.append("isDraft", false);
+
+    if (tags.length > 0) {
+      formData.append("tags", JSON.stringify(tags));
+    }
+
+    if (isImageSubmission) {
+      formData.append("image", image);
+    } else {
+      formData.append("description", content);
+    }
+
+    await createSubmission(formData);
 
     alert("Submission Successful!");
 

@@ -7,13 +7,23 @@ const categories = require("../config/categories");
 const createSubmission = async (req, res) => {
   try {
     const {
-      title,
-      description,
-      image,
-      tags,
-      category,
-      isDraft,
-    } = req.body;
+  title,
+  description,
+  category,
+  isDraft,
+} = req.body;
+
+const image = req.file ? req.file.path : "";
+
+let tags = [];
+
+if (req.body.tags) {
+  try {
+    tags = JSON.parse(req.body.tags);
+  } catch (err) {
+    tags = [];
+  }
+}
 
     if (!categories.includes(category)) {
       return res.status(400).json({
