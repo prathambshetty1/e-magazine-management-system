@@ -14,7 +14,7 @@ const authRoutes = require("./routes/authRoutes");
 const submissionRoutes = require("./routes/submissionRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const mainAdminRoutes = require("./routes/mainAdminRoutes");
-
+const submissionWindowRoutes = require("./routes/submissionWindowRoutes");
 // Middleware
 const { protect } = require("./middleware/auth");
 const { authorize } = require("./middleware/roleAuth");
@@ -39,7 +39,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/submissions", submissionRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/main-admin", mainAdminRoutes);
-
+app.use(
+  "/api/windows",
+  submissionWindowRoutes
+);
 // ======================================
 // Test Route
 // ======================================
@@ -84,6 +87,8 @@ app.get(
     });
   }
 );
+
+
 
 // ======================================
 // Start Server

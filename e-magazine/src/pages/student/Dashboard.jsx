@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import StatCard from "@/components/common/StatCard";
 import { ROLES } from "@/config/roles";
-
+import SubmissionWindowList from "@/components/student/SubmissionWindowList";
+import { getSubmissionWindows } from "@/services/WindowService";
 import { getDashboardStats } from "@/services/submissionService";
 
 import {
@@ -36,10 +37,12 @@ function Dashboard() {
   });
 
   const [loading, setLoading] = useState(true);
+  const [windows, setWindows] = useState([]);
 
   useEffect(() => {
-    loadDashboard();
-  }, []);
+  loadDashboard();
+  loadSubmissionWindows();
+}, []);
 
   const loadDashboard = async () => {
     try {
@@ -51,6 +54,14 @@ function Dashboard() {
       setLoading(false);
     }
   };
+  const loadSubmissionWindows = async () => {
+  try {
+    const data = await getSubmissionWindows();
+    setWindows(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   return (
     <DashboardLayout role={ROLES.STUDENT}>
@@ -230,55 +241,29 @@ function Dashboard() {
 
             </Card>
 
-            {/* Deadlines */}
-
             <Card className="rounded-2xl shadow-sm">
 
-              <CardHeader>
+  <CardHeader>
 
-                <CardTitle className="flex items-center gap-2">
+    <CardTitle className="flex items-center gap-2">
 
-                  <FaCalendarAlt className="text-red-500" />
+      <FaCalendarAlt className="text-emerald-600" />
 
-                  Upcoming Deadlines
+      Submission Windows
 
-                </CardTitle>
+    </CardTitle>
 
-              </CardHeader>
+  </CardHeader>
 
-              <CardContent>
+  <CardContent>
 
-                <div className="space-y-4">
+    <SubmissionWindowList
+    windows={windows}
+/>
 
-                  <div className="border-l-4 border-emerald-500 pl-3">
+  </CardContent>
 
-                    <p className="font-medium">
-                      Magazine Submission
-                    </p>
-
-                    <p className="text-sm text-gray-500">
-                      25 July 2026
-                    </p>
-
-                  </div>
-
-                  <div className="border-l-4 border-yellow-500 pl-3">
-
-                    <p className="font-medium">
-                      Article Revision
-                    </p>
-
-                    <p className="text-sm text-gray-500">
-                      29 July 2026
-                    </p>
-
-                  </div>
-
-                </div>
-
-              </CardContent>
-
-            </Card>
+</Card>
 
           </div>
 

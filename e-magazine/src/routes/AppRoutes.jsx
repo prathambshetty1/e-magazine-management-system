@@ -9,7 +9,9 @@ import SubmitArticle from "@/pages/student/SubmitContent";
 import ProtectedRoute from "./ProtectedRoute";
 import ReviewSubmissions from "@/pages/deptAdmin/ReviewSubmissions";
 import { ROLES } from "@/config/roles";
-
+import SubmissionWindows from "@/pages/mainAdmin/SubmissionWindows";
+import Users from "@/pages/mainAdmin/Users";
+import Submissions from "@/pages/mainAdmin/Submissions";
 function AppRoutes() {
   return (
     
@@ -67,6 +69,32 @@ function AppRoutes() {
   element={
     <ProtectedRoute allowedRoles={[ROLES.STUDENT]}>
       <MySubmissions />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/main-admin/submission-windows"
+  element={
+    <ProtectedRoute allowedRoles={[ROLES.MAIN_ADMIN]}>
+      <SubmissionWindows />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/main-admin/users"
+  element={
+    <ProtectedRoute allowedRoles={[ROLES.MAIN_ADMIN]}>
+      <Users />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/main-admin/submissions"
+  element={
+    <ProtectedRoute
+      allowedRoles={[ROLES.MAIN_ADMIN]}
+    >
+      <Submissions />
     </ProtectedRoute>
   }
 />

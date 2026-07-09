@@ -10,7 +10,7 @@ import {
 
 import { NavLink, useNavigate } from "react-router-dom";
 import { ROLES } from "@/config/roles";
-
+import { FaCalendarAlt } from "react-icons/fa";
 import logo from "@/assets/logo/nittelogo1.png";
 
 function Sidebar({ role }) {
@@ -59,15 +59,25 @@ function Sidebar({ role }) {
       icon: <FaHome />,
     },
     {
-      title: "Manage Departments",
-      path: "/main-admin/departments",
-      icon: <FaUsersCog />,
-    },
+  title: "Manage Users",
+  path: "/main-admin/users",
+  icon: <FaUsersCog />,
+},
     {
       title: "Publish Magazine",
       path: "/main-admin/publish",
       icon: <FaBookOpen />,
     },
+    {
+  title: "Submission Windows",
+  path: "/main-admin/submission-windows",
+  icon: <FaCalendarAlt />,
+},
+{
+    title: "View All Submissions",
+    path: "/main-admin/submissions",
+    icon: <FaFolderOpen />,
+  },
   ];
 
   let links = [];
