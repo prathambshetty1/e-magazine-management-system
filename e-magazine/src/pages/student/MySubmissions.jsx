@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { toast } from "react-hot-toast";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import SubmissionList from "@/components/submission/SubmissionList";
 import EmptyState from "@/components/submission/EmptyState";
@@ -21,7 +21,7 @@ function MySubmissions() {
       setSubmissions(data);
     } catch (error) {
       console.error(error);
-      alert("Failed to load submissions.");
+      toast.error("Failed to load submissions.");
     } finally {
       setLoading(false);
     }

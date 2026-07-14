@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { toast } from "react-hot-toast";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 import SubmissionTable from "@/components/main-admin/SubmissionTable";
@@ -33,7 +33,7 @@ function Submissions() {
 
       console.error(error);
 
-      alert("Failed to load submissions.");
+      toast.error("Failed to load submissions.");
 
     } finally {
 

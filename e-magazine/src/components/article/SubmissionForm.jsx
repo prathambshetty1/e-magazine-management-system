@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { toast } from "react-hot-toast";
 import SubmissionHero from "./SubmissionHero";
 import TextSubmissionForm from "./TextSubmissionForm";
 import ImageSubmissionForm from "./ImageSubmissionForm";
@@ -33,17 +33,17 @@ function SubmissionForm({ category, onBack }) {
   const handleSubmit = async () => {
   try {
     if (!title.trim()) {
-      alert("Please enter a title.");
+      toast.error("Please enter a title.");
       return;
     }
 
     if (isImageSubmission && !image) {
-      alert("Please select an image.");
+      toast.error("Please select an image.");
       return;
     }
 
     if (!isImageSubmission && !content.trim()) {
-      alert("Please enter content.");
+      toast.error("Please enter content.");
       return;
     }
 
@@ -67,7 +67,7 @@ function SubmissionForm({ category, onBack }) {
 
     await createSubmission(formData);
 
-    alert("Submission Successful!");
+    toast.success("Submission Successful!");
 
     setTitle("");
     setContent("");
@@ -79,7 +79,7 @@ function SubmissionForm({ category, onBack }) {
   } catch (error) {
     console.error(error);
 
-    alert(
+    toast.error(
       error.response?.data?.message ||
       "Submission failed."
     );

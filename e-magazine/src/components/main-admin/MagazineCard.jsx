@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import {
 } from "react-icons/fa";
 
 import MagazineDialog from "./MagazineDialog";
+import ConfirmDialog from "@/components/common/ConfirmDialog";
 
 import {
   deleteMagazine,
@@ -21,18 +23,15 @@ function MagazineCard({
   refresh,
 }) {
   const [open, setOpen] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   const handleDelete = async () => {
-    const confirmDelete = window.confirm(
-      "Delete this magazine?"
-    );
-
-    if (!confirmDelete) return;
-
     try {
       await deleteMagazine(magazine._id);
 
-      alert("Magazine deleted successfully.");
+      toast.success("Magazine deleted successfully.");
+
+      setConfirmOpen(false);
 
       refresh();
 
@@ -40,7 +39,7 @@ function MagazineCard({
 
       console.error(error);
 
-      alert("Failed to delete magazine.");
+      toast.error("Failed to delete magazine.");
 
     }
   };
@@ -74,11 +73,9 @@ function MagazineCard({
             <FaCalendarAlt />
 
             <span>
-
               {new Date(
                 magazine.publishedAt
               ).toLocaleDateString()}
-
             </span>
 
           </div>
@@ -86,11 +83,8 @@ function MagazineCard({
           <div className="mt-3">
 
             <span className="font-medium">
-
               {magazine.submissions.length}
-
             </span>{" "}
-
             submissions
 
           </div>
@@ -99,18 +93,15 @@ function MagazineCard({
 
             <Button
               className="flex-1"
-              onClick={() =>
-                setOpen(true)
-              }
+              onClick={() => setOpen(true)}
             >
               <FaEye className="mr-2" />
-
               View
             </Button>
 
             <Button
               variant="destructive"
-              onClick={handleDelete}
+              onClick={() => setConfirmOpen(true)}
             >
               <FaTrash />
             </Button>
@@ -125,6 +116,15 @@ function MagazineCard({
         open={open}
         onOpenChange={setOpen}
         magazineId={magazine._id}
+      />
+
+      <ConfirmDialog
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        title="Delete Magazine"
+        description="This action will permanently delete this magazine and restore all its submissions back to Approved."
+        confirmText="Delete"
+        onConfirm={handleDelete}
       />
     </>
   );

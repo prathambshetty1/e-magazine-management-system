@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 import SubmissionWindowGrid from "@/components/main-admin/SubmissionWindowGrid";
@@ -8,6 +7,7 @@ import EditWindowDialog from "@/components/main-admin/EditWindowDialog";
 import { getSubmissionWindows } from "@/services/WindowService";
 
 import { ROLES } from "@/config/roles";
+import toast from "react-hot-toast";
 
 function SubmissionWindows() {
   const [windows, setWindows] = useState([]);
@@ -29,7 +29,7 @@ function SubmissionWindows() {
       setWindows(data);
     } catch (error) {
       console.error(error);
-      alert("Failed to load submission windows.");
+      toast.error("Failed to load submission windows.");
     } finally {
       setLoading(false);
     }

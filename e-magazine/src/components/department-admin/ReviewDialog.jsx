@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { toast } from "react-hot-toast";
 import {
   Dialog,
   DialogContent,
@@ -49,7 +49,7 @@ function ReviewDialog({
 
       await approveSubmission(submission._id);
 
-      alert("Submission Approved!");
+      toast.success("Submission Approved!");
 
       onOpenChange(false);
 
@@ -58,7 +58,7 @@ function ReviewDialog({
     } catch (err) {
       console.error(err);
 
-      alert(
+      toast.error(
         err.response?.data?.message ||
           "Approval failed."
       );
@@ -71,7 +71,7 @@ function ReviewDialog({
   const handleReject = async () => {
 
     if (!feedback.trim()) {
-      alert("Feedback is required.");
+      toast.error("Feedback is required.");
       return;
     }
 
@@ -84,7 +84,7 @@ function ReviewDialog({
         feedback
       );
 
-      alert("Submission Rejected!");
+      toast.error("Submission Rejected!");
 
       setFeedback("");
       setShowReject(false);
@@ -97,7 +97,7 @@ function ReviewDialog({
 
       console.error(err);
 
-      alert(
+      toast.error(
         err.response?.data?.message ||
           "Rejection failed."
       );

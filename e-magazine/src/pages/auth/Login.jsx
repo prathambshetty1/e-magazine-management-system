@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
+import { toast } from "react-hot-toast";
 import ImageSlider from "@/components/common/ImageSlider";
 import logo from "@/assets/logo/nmamit-logo.png";
 
@@ -63,7 +63,7 @@ function Login() {
     } catch (error) {
       console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message || "Invalid email or password"
       );
     } finally {

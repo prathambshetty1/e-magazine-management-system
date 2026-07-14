@@ -6,6 +6,7 @@ import UserTable from "@/components/main-admin/UserTable";
 import { ROLES } from "@/config/roles";
 
 import { getUsers } from "@/services/mainAdminService";
+import toast from "react-hot-toast";
 
 function Users() {
 
@@ -27,7 +28,7 @@ function Users() {
 
       console.error(err);
 
-      alert("Failed to load users.");
+      toast.error("Failed to load users.");
 
     } finally {
 

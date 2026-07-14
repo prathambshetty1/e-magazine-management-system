@@ -6,6 +6,7 @@ import {
   assignDepartmentAdmin,
   removeDepartmentAdmin,
 } from "@/services/mainAdminService";
+import toast from "react-hot-toast";
 
 const categories = [
   "Articles",
@@ -38,7 +39,7 @@ function UserRow({
         department,
       });
 
-      alert("Department Admin assigned successfully.");
+      toast.success("Department Admin assigned successfully.");
 
       refresh();
 
@@ -46,7 +47,7 @@ function UserRow({
 
       console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Assignment failed."
       );
@@ -78,7 +79,7 @@ function UserRow({
         usn: user.usn,
       });
 
-      alert("Department Admin removed.");
+      toast.success("Department Admin removed.");
 
       refresh();
 

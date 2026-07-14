@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { toast } from "react-hot-toast";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import MagazineCard from "@/components/main-admin/MagazineCard";
 
@@ -20,7 +20,7 @@ function PublishedMagazines() {
       setMagazines(data);
     } catch (error) {
       console.error(error);
-      alert("Failed to load magazines.");
+      toast.error("Failed to load magazines.");
     } finally {
       setLoading(false);
     }

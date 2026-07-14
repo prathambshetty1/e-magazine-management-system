@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { toast } from "react-hot-toast";
 import {
   Dialog,
   DialogContent,
@@ -41,12 +41,12 @@ function EditWindowDialog({
 
   const handleSave = async () => {
     if (!openDate || !closeDate) {
-      alert("Please select both dates.");
+      toast.error("Please select both dates.");
       return;
     }
 
     if (openDate >= closeDate) {
-      alert("Close date must be after Open date.");
+      toast.error("Close date must be after Open date.");
       return;
     }
 
@@ -61,7 +61,7 @@ function EditWindowDialog({
         }
       );
 
-      alert("Submission window updated!");
+      toast.success("Submission window updated!");
 
       onOpenChange(false);
 
@@ -72,7 +72,7 @@ function EditWindowDialog({
     } catch (error) {
       console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to update submission window."
       );

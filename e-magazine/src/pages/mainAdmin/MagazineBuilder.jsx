@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { toast } from "react-hot-toast";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 import MagazineCategory from "@/components/main-admin/MagazineCategory";
@@ -40,7 +40,7 @@ const [description, setDescription] = useState("");
 
       console.error(error);
 
-      alert("Failed to load submissions.");
+      toast.error("Failed to load submissions.");
 
     } finally {
 
@@ -59,15 +59,15 @@ const [description, setDescription] = useState("");
 const handlePublish = async () => {
 
   if (!title.trim()) {
-    return alert("Magazine title required.");
+    return toast.error("Magazine title required.");
   }
 
   if (!edition.trim()) {
-    return alert("Edition required.");
+    return toast.error("Edition required.");
   }
 
   if (selected.length === 0) {
-    return alert(
+    return toast.error(
       "Select at least one submission."
     );
   }
@@ -81,7 +81,7 @@ const handlePublish = async () => {
       submissions: selected,
     });
 
-    alert(
+    toast.success(
       "Magazine published successfully!"
     );
 
@@ -96,7 +96,7 @@ const handlePublish = async () => {
 
     console.error(error);
 
-    alert(
+    toast.error(
       error.response?.data?.message ||
       "Publishing failed."
     );
