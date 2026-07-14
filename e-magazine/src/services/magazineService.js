@@ -29,3 +29,19 @@ export const getMagazines = async () => {
 
   return response.data;
 };
+export const deleteMagazine = async (id) => {
+  const response = await api.delete(
+    `/magazines/${id}`
+  );
+
+  return response.data;
+};
+export const getMagazineById = async (
+  id
+) => {
+  const response = await api.get(
+    `/magazines/${id}`
+  );
+
+  return response.data;
+};

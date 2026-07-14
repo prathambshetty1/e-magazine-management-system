@@ -13,6 +13,7 @@ import SubmissionWindows from "@/pages/mainAdmin/SubmissionWindows";
 import Users from "@/pages/mainAdmin/Users";
 import Submissions from "@/pages/mainAdmin/Submissions";
 import MagazineBuilder from "@/pages/mainAdmin/MagazineBuilder";
+import PublishedMagazines from "@/pages/mainAdmin/PublishedMagazines";
 function AppRoutes() {
   return (
     
@@ -96,6 +97,16 @@ function AppRoutes() {
       allowedRoles={[ROLES.MAIN_ADMIN]}
     >
       <Submissions />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/main-admin/published-magazines"
+  element={
+    <ProtectedRoute
+      allowedRoles={[ROLES.MAIN_ADMIN]}
+    >
+      <PublishedMagazines />
     </ProtectedRoute>
   }
 />

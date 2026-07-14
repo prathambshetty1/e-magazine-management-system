@@ -13,6 +13,7 @@ import { ROLES } from "@/config/roles";
 import { FaCalendarAlt } from "react-icons/fa";
 import logo from "@/assets/logo/nittelogo1.png";
 
+
 function Sidebar({ role }) {
   const navigate = useNavigate();
 
@@ -78,6 +79,11 @@ function Sidebar({ role }) {
     path: "/main-admin/submissions",
     icon: <FaFolderOpen />,
   },
+  {
+  title: "Published Magazines",
+  path: "/main-admin/published-magazines",
+  icon: <FaBookOpen />,
+},
   ];
 
   let links = [];
