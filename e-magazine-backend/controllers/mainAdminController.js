@@ -154,6 +154,25 @@ const getAllSubmissions = async (req, res) => {
     });
   }
 };
+// Get Approved Submissions
+const getApprovedSubmissions = async (req, res) => {
+  try {
+    const submissions = await Submission.find({
+      status: "Approved",
+    })
+      .populate("student", "name usn email")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(submissions);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    });
+
+  }
+};
 // Publish Approved Article
 const publishSubmission = async (req, res) => {
   try {
@@ -193,5 +212,6 @@ module.exports = {
   getAllUsers,
   getDashboardStats,
   getAllSubmissions,
+  getApprovedSubmissions,
   publishSubmission,
 };

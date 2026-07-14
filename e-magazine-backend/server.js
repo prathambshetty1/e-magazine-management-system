@@ -15,6 +15,7 @@ const submissionRoutes = require("./routes/submissionRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const mainAdminRoutes = require("./routes/mainAdminRoutes");
 const submissionWindowRoutes = require("./routes/submissionWindowRoutes");
+const magazineRoutes = require("./routes/magazineRoutes");
 // Middleware
 const { protect } = require("./middleware/auth");
 const { authorize } = require("./middleware/roleAuth");
@@ -39,10 +40,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/submissions", submissionRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/main-admin", mainAdminRoutes);
-app.use(
-  "/api/windows",
-  submissionWindowRoutes
+app.use("/api/windows",submissionWindowRoutes
 );
+app.use("/api/magazines", magazineRoutes);
 // ======================================
 // Test Route
 // ======================================

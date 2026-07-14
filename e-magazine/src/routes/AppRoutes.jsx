@@ -12,6 +12,7 @@ import { ROLES } from "@/config/roles";
 import SubmissionWindows from "@/pages/mainAdmin/SubmissionWindows";
 import Users from "@/pages/mainAdmin/Users";
 import Submissions from "@/pages/mainAdmin/Submissions";
+import MagazineBuilder from "@/pages/mainAdmin/MagazineBuilder";
 function AppRoutes() {
   return (
     
@@ -95,6 +96,14 @@ function AppRoutes() {
       allowedRoles={[ROLES.MAIN_ADMIN]}
     >
       <Submissions />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/main-admin/magazine-builder"
+  element={
+    <ProtectedRoute allowedRoles={[ROLES.MAIN_ADMIN]}>
+      <MagazineBuilder />
     </ProtectedRoute>
   }
 />

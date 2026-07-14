@@ -135,12 +135,12 @@ function Dashboard() {
               </Button>
             </Link>
 
-            <Link to="/main-admin/publish">
+            <Link to="/main-admin/magazine-builder">
               <Button
                 variant="outline"
                 className="w-full"
               >
-                Publish Magazine
+                Magazine Builder
               </Button>
             </Link>
 

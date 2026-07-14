@@ -11,6 +11,7 @@ const {
   getAllUsers,
   getDashboardStats,
   getAllSubmissions,
+  getApprovedSubmissions,
   publishSubmission,
 } = require("../controllers/mainAdminController");
 
@@ -44,6 +45,12 @@ router.get(
   protect,
   authorize("main_admin"),
   getAllSubmissions
+);
+router.get(
+  "/approved-submissions",
+  protect,
+  authorize("main_admin"),
+  getApprovedSubmissions
 );
 router.put(
   "/publish/:id",

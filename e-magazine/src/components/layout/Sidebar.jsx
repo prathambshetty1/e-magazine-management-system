@@ -64,10 +64,10 @@ function Sidebar({ role }) {
   icon: <FaUsersCog />,
 },
     {
-      title: "Publish Magazine",
-      path: "/main-admin/publish",
-      icon: <FaBookOpen />,
-    },
+  title: "Magazine Builder",
+  path: "/main-admin/magazine-builder",
+  icon: <FaBookOpen />,
+},
     {
   title: "Submission Windows",
   path: "/main-admin/submission-windows",
