@@ -14,6 +14,8 @@ import Users from "@/pages/mainAdmin/Users";
 import Submissions from "@/pages/mainAdmin/Submissions";
 import MagazineBuilder from "@/pages/mainAdmin/MagazineBuilder";
 import PublishedMagazines from "@/pages/mainAdmin/PublishedMagazines";
+import MagazineViewer from "@/pages/mainAdmin/MagazineViewer";
+import ForgotPassword from "@/pages/auth/ForgotPassword";
 function AppRoutes() {
   return (
     
@@ -22,6 +24,10 @@ function AppRoutes() {
       {/* Public Route */}
       <Route path="/" element={<Login />} />
 
+      <Route
+  path="/forgot-password"
+  element={<ForgotPassword />}
+/>
       {/* Student Routes */}
       <Route
         path="/student/dashboard"
@@ -115,6 +121,16 @@ function AppRoutes() {
   element={
     <ProtectedRoute allowedRoles={[ROLES.MAIN_ADMIN]}>
       <MagazineBuilder />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/main-admin/magazines/:id"
+  element={
+    <ProtectedRoute
+      allowedRoles={[ROLES.MAIN_ADMIN]}
+    >
+      <MagazineViewer />
     </ProtectedRoute>
   }
 />

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,7 +12,6 @@ import {
   FaTrash,
 } from "react-icons/fa";
 
-import MagazineDialog from "./MagazineDialog";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 
 import {
@@ -22,11 +22,13 @@ function MagazineCard({
   magazine,
   refresh,
 }) {
-  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const handleDelete = async () => {
     try {
+
       await deleteMagazine(magazine._id);
 
       toast.success("Magazine deleted successfully.");
@@ -46,7 +48,7 @@ function MagazineCard({
 
   return (
     <>
-      <Card className="rounded-2xl shadow-sm">
+      <Card className="rounded-2xl shadow-sm hover:shadow-lg transition">
 
         <CardContent className="p-6">
 
@@ -80,9 +82,9 @@ function MagazineCard({
 
           </div>
 
-          <div className="mt-3">
+          <div className="mt-4">
 
-            <span className="font-medium">
+            <span className="font-semibold">
               {magazine.submissions.length}
             </span>{" "}
             submissions
@@ -93,15 +95,23 @@ function MagazineCard({
 
             <Button
               className="flex-1"
-              onClick={() => setOpen(true)}
+              onClick={() =>
+                navigate(
+                  `/main-admin/magazines/${magazine._id}`
+                )
+              }
             >
               <FaEye className="mr-2" />
-              View
+
+              View Edition
+
             </Button>
 
             <Button
               variant="destructive"
-              onClick={() => setConfirmOpen(true)}
+              onClick={() =>
+                setConfirmOpen(true)
+              }
             >
               <FaTrash />
             </Button>
@@ -112,12 +122,6 @@ function MagazineCard({
 
       </Card>
 
-      <MagazineDialog
-        open={open}
-        onOpenChange={setOpen}
-        magazineId={magazine._id}
-      />
-
       <ConfirmDialog
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
@@ -126,6 +130,7 @@ function MagazineCard({
         confirmText="Delete"
         onConfirm={handleDelete}
       />
+
     </>
   );
 }

@@ -140,11 +140,12 @@ function Login() {
                   </Label>
 
                   <button
-                    type="button"
-                    className="text-sm text-emerald-600 hover:underline"
-                  >
-                    Forgot Password?
-                  </button>
+  type="button"
+  onClick={() => navigate("/forgot-password")}
+  className="text-sm text-emerald-600 hover:underline"
+>
+  Forgot Password?
+</button>
 
                 </div>
 
