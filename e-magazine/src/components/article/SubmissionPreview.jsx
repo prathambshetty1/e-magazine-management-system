@@ -10,47 +10,38 @@ function SubmissionPreview({
     category === "Photography" ||
     category === "Paintings";
 
+  const previewImage =
+    image instanceof File
+      ? URL.createObjectURL(image)
+      : image;
+
   return (
     <Card className="rounded-3xl shadow-md h-fit sticky top-8">
-
       <CardContent className="p-8">
-
         <h2 className="text-2xl font-bold mb-6">
           Live Preview
         </h2>
 
         {isImageSubmission ? (
-
           <div>
-
-            {image ? (
-
+            {previewImage ? (
               <img
-                src={URL.createObjectURL(image)}
+                src={previewImage}
                 alt="Preview"
                 className="rounded-xl w-full object-cover mb-6"
               />
-
             ) : (
-
               <div className="h-64 rounded-xl border-2 border-dashed flex items-center justify-center text-gray-400">
-
                 Image Preview
-
               </div>
-
             )}
 
             <h3 className="text-2xl font-bold mt-4">
               {title || "Untitled"}
             </h3>
-
           </div>
-
         ) : (
-
           <div>
-
             <h1 className="text-3xl font-bold mb-6">
               {title || "Untitled"}
             </h1>
@@ -63,13 +54,9 @@ function SubmissionPreview({
                   "<p class='text-gray-400'>Start writing...</p>",
               }}
             />
-
           </div>
-
         )}
-
       </CardContent>
-
     </Card>
   );
 }

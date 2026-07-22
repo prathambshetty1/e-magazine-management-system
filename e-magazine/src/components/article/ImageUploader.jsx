@@ -12,6 +12,11 @@ function ImageUploader({ image, setImage }) {
     setImage(file);
   };
 
+  const preview =
+    image instanceof File
+      ? URL.createObjectURL(image)
+      : image;
+
   return (
     <div
       onClick={() => inputRef.current.click()}
@@ -38,11 +43,11 @@ function ImageUploader({ image, setImage }) {
         onChange={handleImage}
       />
 
-      {image && (
+      {preview && (
         <img
-          src={URL.createObjectURL(image)}
+          src={preview}
           alt="Preview"
-          className="mt-6 rounded-xl max-h-64 mx-auto"
+          className="mt-6 rounded-xl max-h-64 mx-auto object-cover"
         />
       )}
     </div>

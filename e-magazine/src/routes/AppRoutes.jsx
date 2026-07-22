@@ -16,6 +16,7 @@ import MagazineBuilder from "@/pages/mainAdmin/MagazineBuilder";
 import PublishedMagazines from "@/pages/mainAdmin/PublishedMagazines";
 import MagazineViewer from "@/pages/mainAdmin/MagazineViewer";
 import ForgotPassword from "@/pages/auth/ForgotPassword";
+import EditSubmission from "@/pages/student/EditSubmission";
 function AppRoutes() {
   return (
     
@@ -69,6 +70,14 @@ function AppRoutes() {
   element={
     <ProtectedRoute allowedRoles={[ROLES.STUDENT]}>
       <SubmitArticle />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/student/edit-submission/:id"
+  element={
+    <ProtectedRoute allowedRoles={[ROLES.STUDENT]}>
+      <EditSubmission />
     </ProtectedRoute>
   }
 />

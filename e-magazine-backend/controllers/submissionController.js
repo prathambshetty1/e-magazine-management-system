@@ -7,23 +7,23 @@ const categories = require("../config/categories");
 const createSubmission = async (req, res) => {
   try {
     const {
-  title,
-  description,
-  category,
-  isDraft,
-} = req.body;
+      title,
+      description,
+      category,
+      isDraft,
+    } = req.body;
 
-const image = req.file ? req.file.path : "";
+    const image = req.file ? req.file.path : "";
 
-let tags = [];
+    let tags = [];
 
-if (req.body.tags) {
-  try {
-    tags = JSON.parse(req.body.tags);
-  } catch (err) {
-    tags = [];
-  }
-}
+    if (req.body.tags) {
+      try {
+        tags = JSON.parse(req.body.tags);
+      } catch (err) {
+        tags = [];
+      }
+    }
 
     if (!categories.includes(category)) {
       return res.status(400).json({
@@ -139,9 +139,9 @@ const getMySubmissions = async (req, res) => {
 };
 
 // ==========================
-// Update Submission
+// Get Single Submission
 // ==========================
-const updateSubmission = async (req, res) => {
+const getSubmissionById = async (req, res) => {
   try {
     const submission = await Submission.findById(req.params.id);
 
@@ -157,35 +157,109 @@ const updateSubmission = async (req, res) => {
       });
     }
 
-    if (submission.status !== "Rejected") {
-      return res.status(400).json({
-        message: "Only rejected submissions can be edited",
+    res.status(200).json(submission);
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+// ==========================
+// Update Submission
+// ==========================
+const updateSubmission = async (req, res) => {
+  try {
+
+    const submission = await Submission.findById(req.params.id);
+
+    if (!submission) {
+      return res.status(404).json({
+        message: "Submission not found",
       });
     }
 
-    submission.title =
-      req.body.title || submission.title;
+    if (submission.student.toString() !== req.user.id) {
+      return res.status(403).json({
+        message: "Not authorized",
+      });
+    }
 
-    submission.description =
-      req.body.description ??
-      submission.description;
+    if (
+      submission.status !== "Pending" &&
+      submission.status !== "Rejected"
+    ) {
+      return res.status(400).json({
+        message:
+          "Cannot be edited. This submission has already been reviewed.",
+      });
+    }
 
-    submission.image =
-      req.body.image ??
-      submission.image;
+    const {
+  title,
+  description,
+} = req.body;
 
-    submission.tags =
-      req.body.tags ??
-      submission.tags;
+// Keep the original category from the database.
+// Students are not allowed to change it.
+const category = submission.category;
 
-    submission.category =
-      req.body.category ||
-      submission.category;
+    if (!title || title.trim() === "") {
+      return res.status(400).json({
+        message: "Title is required",
+      });
+    }
 
-    submission.status = "Pending";
-    submission.feedback = "";
-    submission.reviewedBy = null;
-    submission.reviewedAt = null;
+    let tags = submission.tags;
+
+    if (req.body.tags) {
+      try {
+        tags = JSON.parse(req.body.tags);
+      } catch (err) {
+        tags = [];
+      }
+    }
+
+    const isImageSubmission =
+      category === "Photography" ||
+      category === "Paintings";
+
+    if (isImageSubmission) {
+
+      if (req.file) {
+        submission.image = req.file.path;
+      }
+
+      if (!submission.image) {
+        return res.status(400).json({
+          message: "Image is required",
+        });
+      }
+
+      submission.description = "";
+
+    } else {
+
+      if (!description || description.trim() === "") {
+        return res.status(400).json({
+          message: "Content is required",
+        });
+      }
+
+      submission.description = description;
+    }
+
+    submission.title = title;
+    submission.category = category;
+    submission.tags = tags;
+
+    if (submission.status === "Rejected") {
+      submission.status = "Pending";
+      submission.feedback = "";
+      submission.reviewedBy = null;
+      submission.reviewedAt = null;
+    }
 
     await submission.save();
 
@@ -205,5 +279,6 @@ module.exports = {
   createSubmission,
   getStudentDashboard,
   getMySubmissions,
+  getSubmissionById,
   updateSubmission,
 };

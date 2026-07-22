@@ -4,6 +4,7 @@ const {
   createSubmission,
   getStudentDashboard,
   getMySubmissions,
+  getSubmissionById,
   updateSubmission,
 } = require("../controllers/submissionController");
 
@@ -46,11 +47,20 @@ router.get(
   getMySubmissions
 );
 
-// Update Rejected Submission
+// Get Single Submission
+router.get(
+  "/:id",
+  protect,
+  authorize("student"),
+  getSubmissionById
+);
+
+// Update Submission (Pending / Rejected)
 router.put(
   "/:id",
   protect,
   authorize("student"),
+  upload.single("image"),
   updateSubmission
 );
 

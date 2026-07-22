@@ -30,6 +30,14 @@ export const getMySubmissions = async () => {
 };
 
 // ===============================
+// Get Single Submission
+// ===============================
+export const getSubmissionById = async (id) => {
+  const response = await api.get(`/submissions/${id}`);
+  return response.data;
+};
+
+// ===============================
 // Update Submission
 // ===============================
 export const updateSubmission = async (id, formData) => {
