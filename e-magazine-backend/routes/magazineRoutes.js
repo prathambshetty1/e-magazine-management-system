@@ -12,28 +12,26 @@ const {
 const { protect } = require("../middleware/auth");
 const { authorize } = require("../middleware/roleAuth");
 
+// ==========================
+// Public Routes
+// ==========================
+
+// Get All Published Magazines
+router.get("/", getAllMagazines);
+
+// Get Single Magazine
+router.get("/:id", getMagazineById);
+
+// ==========================
+// Protected Routes
+// ==========================
+
 // Create Magazine
 router.post(
   "/",
   protect,
   authorize("main_admin"),
   createMagazine
-);
-
-// Get All Magazines
-router.get(
-  "/",
-  protect,
-  authorize("main_admin"),
-  getAllMagazines
-);
-
-// Get Single Magazine
-router.get(
-  "/:id",
-  protect,
-  authorize("main_admin"),
-  getMagazineById
 );
 
 // Delete Magazine

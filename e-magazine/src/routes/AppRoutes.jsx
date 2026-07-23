@@ -17,6 +17,8 @@ import PublishedMagazines from "@/pages/mainAdmin/PublishedMagazines";
 import MagazineViewer from "@/pages/mainAdmin/MagazineViewer";
 import ForgotPassword from "@/pages/auth/ForgotPassword";
 import EditSubmission from "@/pages/student/EditSubmission";
+import PublicMagazines from "@/pages/public/PublicMagazines";
+import PublicMagazineViewer from "@/pages/public/PublicMagazineViewer";
 function AppRoutes() {
   return (
     
@@ -142,6 +144,15 @@ function AppRoutes() {
       <MagazineViewer />
     </ProtectedRoute>
   }
+/>
+<Route
+  path="/magazines"
+  element={<PublicMagazines />}
+/>
+
+<Route
+  path="/magazines/:id"
+  element={<PublicMagazineViewer />}
 />
 
       {/* Invalid Route */}

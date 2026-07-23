@@ -21,6 +21,7 @@ import {
 function MagazineCard({
   magazine,
   refresh,
+  isPublic = false,
 }) {
   const navigate = useNavigate();
 
@@ -28,28 +29,32 @@ function MagazineCard({
 
   const handleDelete = async () => {
     try {
-
       await deleteMagazine(magazine._id);
 
       toast.success("Magazine deleted successfully.");
 
       setConfirmOpen(false);
 
-      refresh();
+      refresh?.();
 
     } catch (error) {
-
       console.error(error);
 
       toast.error("Failed to delete magazine.");
+    }
+  };
 
+  const handleView = () => {
+    if (isPublic) {
+      navigate(`/magazines/${magazine._id}`);
+    } else {
+      navigate(`/main-admin/magazines/${magazine._id}`);
     }
   };
 
   return (
     <>
       <Card className="rounded-2xl shadow-sm hover:shadow-lg transition">
-
         <CardContent className="p-6">
 
           <div className="flex items-center gap-3">
@@ -57,7 +62,6 @@ function MagazineCard({
             <FaBook className="text-emerald-600 text-2xl" />
 
             <div>
-
               <h2 className="text-xl font-bold">
                 {magazine.title}
               </h2>
@@ -65,7 +69,6 @@ function MagazineCard({
               <p className="text-gray-500">
                 {magazine.edition}
               </p>
-
             </div>
 
           </div>
@@ -83,54 +86,46 @@ function MagazineCard({
           </div>
 
           <div className="mt-4">
-
             <span className="font-semibold">
               {magazine.submissions.length}
             </span>{" "}
             submissions
-
           </div>
 
           <div className="flex gap-3 mt-6">
 
             <Button
               className="flex-1"
-              onClick={() =>
-                navigate(
-                  `/main-admin/magazines/${magazine._id}`
-                )
-              }
+              onClick={handleView}
             >
               <FaEye className="mr-2" />
-
               View Edition
-
             </Button>
 
-            <Button
-              variant="destructive"
-              onClick={() =>
-                setConfirmOpen(true)
-              }
-            >
-              <FaTrash />
-            </Button>
+            {!isPublic && (
+              <Button
+                variant="destructive"
+                onClick={() => setConfirmOpen(true)}
+              >
+                <FaTrash />
+              </Button>
+            )}
 
           </div>
 
         </CardContent>
-
       </Card>
 
-      <ConfirmDialog
-        open={confirmOpen}
-        onOpenChange={setConfirmOpen}
-        title="Delete Magazine"
-        description="This action will permanently delete this magazine and restore all its submissions back to Approved."
-        confirmText="Delete"
-        onConfirm={handleDelete}
-      />
-
+      {!isPublic && (
+        <ConfirmDialog
+          open={confirmOpen}
+          onOpenChange={setConfirmOpen}
+          title="Delete Magazine"
+          description="This action will permanently delete this magazine and restore all its submissions back to Approved."
+          confirmText="Delete"
+          onConfirm={handleDelete}
+        />
+      )}
     </>
   );
 }

@@ -178,13 +178,34 @@ const { login } = useAuth();
 
               {/* Login Button */}
 
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-emerald-600 hover:bg-emerald-700"
-              >
-                {loading ? "Signing In..." : "Sign In"}
-              </Button>
+              {/* Login Button */}
+
+<Button
+  type="submit"
+  disabled={loading}
+  className="w-full bg-emerald-600 hover:bg-emerald-700"
+>
+  {loading ? "Signing In..." : "Sign In"}
+</Button>
+
+{/* Public Magazines */}
+
+<div className="mt-6 border-t pt-6">
+
+  <p className="text-center text-sm text-gray-500 mb-4">
+    Want to explore our college magazine?
+  </p>
+
+  <Button
+    type="button"
+    variant="outline"
+    className="w-full"
+    onClick={() => navigate("/magazines")}
+  >
+    📚 View Published Magazines
+  </Button>
+
+</div>
 
             </form>
 
