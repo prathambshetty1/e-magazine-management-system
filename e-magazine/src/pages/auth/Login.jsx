@@ -4,7 +4,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import ImageSlider from "@/components/common/ImageSlider";
 import logo from "@/assets/logo/nmamit-logo.png";
-
+import useAuth from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,7 +21,7 @@ import { ROLES } from "@/config/roles";
 
 function Login() {
   const navigate = useNavigate();
-
+const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -41,8 +41,7 @@ function Login() {
       console.log("Login Successful");
       console.log(data);
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      login(data.user, data.token);
 
       switch (data.user.role) {
         case ROLES.STUDENT:

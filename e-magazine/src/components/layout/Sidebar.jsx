@@ -12,15 +12,15 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { ROLES } from "@/config/roles";
 import { FaCalendarAlt } from "react-icons/fa";
 import logo from "@/assets/logo/nittelogo1.png";
-
+import useAuth from "@/hooks/useAuth";
 
 function Sidebar({ role }) {
   const navigate = useNavigate();
-
+  const { logout } = useAuth();
   const handleLogout = () => {
-    localStorage.clear();
-    navigate("/login", { replace: true });
-  };
+  logout();
+  navigate("/", { replace: true });
+};
 
   const studentLinks = [
     {
